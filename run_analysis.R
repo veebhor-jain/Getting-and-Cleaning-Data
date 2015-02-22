@@ -1,3 +1,4 @@
+library(dplyr)
 testData <- read.table("getdata-projectfiles-UCI HAR Dataset/UCI HAR Dataset/test/X_test.txt", colClass = c("numeric","numeric","numeric","numeric","numeric","numeric",rep("NULL", 555)), col.names = c("Body.Acc.Mean.X", "Body.Acc.Mean.Y", "Body.Acc.Mean.Z", "Body.Acc.SD.X", "Body.Acc.SD.Y", "Body.Acc.SD.Z", rep("NULL", 555)))
 trainData <- read.table("getdata-projectfiles-UCI HAR Dataset/UCI HAR Dataset/train/X_train.txt", colClass = c("numeric","numeric","numeric","numeric","numeric","numeric", rep("NULL", 555)), col.names = c("Body.Acc.Mean.X", "Body.Acc.Mean.Y", "Body.Acc.Mean.Z", "Body.Acc.SD.X", "Body.Acc.SD.Y", "Body.Acc.SD.Z", rep("NULL", 555)))
 testActivity <- read.table("getdata-projectfiles-UCI HAR Dataset/UCI HAR Dataset/test/y_test.txt", col.names = "Activity")
@@ -13,4 +14,5 @@ rm("mergedActivity", "mergedData", "mergedSubject", "mergedTable", "testActivity
 newTable <- mutate(newTable, Activity = ifelse(Activity==1,"Walking", ifelse(Activity==2,"Walking_Upstairs",ifelse(Activity==3,"Walking_Downstairs",ifelse(Activity==4,"Sitting",ifelse(Activity==5,"Standing","Laying"))))))
 summaryTable <- newTable %>% group_by(Activity,Subject.ID) %>% summarise_each(funs(mean))
 write.table(summaryTable, "Output.txt", row.name = FALSE)
-rm(summaryTable)
+rm(newTable, summaryTable)
+detach("package:dplyr", unload=TRUE)
